@@ -25,15 +25,19 @@ services:
     image: nginxproxy/acme-companion
     restart: unless-stopped
     environment:
-      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL:?set LETSENCRYPT_EMAIL in .env}
+      DEFAULT_EMAIL: ${LETSENCRYPT_EMAIL}
+      NGINX_PROXY_CONTAINER: ayalab-reverse-proxy-nginx-proxy-1
+
     volumes:
       - certs:/etc/nginx/certs
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
     depends_on:
       - nginx-proxy
+
     networks:
       - web
 
